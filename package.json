@@ -1,8 +1,8 @@
 {
-  "name": "my-module",
+  "name": "nuxt-anchorscroll",
   "version": "1.0.0",
-  "description": "My new Nuxt module",
-  "repository": "your-org/my-module",
+  "description": "Scroll with anchor support for Nuxt",
+  "repository": "helltraitor/nuxt-anchorscroll",
   "license": "MIT",
   "type": "module",
   "exports": {
