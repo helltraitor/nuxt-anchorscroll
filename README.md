@@ -75,10 +75,10 @@ nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
     return undefined
 
   return {
-    surfaces: [...document.querySelectorAll('#exited-scrollable-surface')].
+    surfaces: [...document.querySelectorAll('#exited-scrollable-surface')],
     scrollOptions: {
       /* ... */
-    }
+    },
   }
 })
 ```
