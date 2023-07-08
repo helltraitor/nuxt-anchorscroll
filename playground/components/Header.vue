@@ -25,10 +25,10 @@ useNuxtApp().$headerHeight = headerHeight
     </div>
     <div style="margin-inline: auto;" />
     <nav text-base>
-      <NuxtLink lt-md:hidden class="linked" to="/preferred/explanation">
+      <NuxtLink class="linked" to="/preferred/explanation">
         Preferred
       </NuxtLink>
-      <NuxtLink lt-md:hidden class="linked" to="/standard/explanation">
+      <NuxtLink class="linked" to="/standard/explanation">
         Standard
       </NuxtLink>
       <NuxtLink class="linked" href="https://github.com/helltraitor/nuxt-anchorscroll" target="_blank">
