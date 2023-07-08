@@ -5,10 +5,24 @@ import {
 
 export default defineNuxtConfig({
   modules: [
-    '../src/module',
+    '@nuxt/content',
     '@unocss/nuxt',
+    '../src/module',
   ],
   devtools: { enabled: true },
+  content: {
+    highlight: {
+      preload: [
+        'js',
+        'ts',
+        'scss',
+      ],
+      theme: {
+        default: 'vitesse-light',
+        dark: 'vitesse-dark',
+      },
+    },
+  },
   unocss: {
     presets: [
       PresetAttributify(),
