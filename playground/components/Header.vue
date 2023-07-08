@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import '@/assets/css/linked.sass'
 
+import { computed, ref, useNuxtApp } from '#imports'
+
 const headerElement = ref<HTMLElement | undefined>()
 const headerHeight = computed(() => headerElement.value?.clientHeight ?? 0)
 

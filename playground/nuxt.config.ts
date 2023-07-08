@@ -23,6 +23,9 @@ export default defineNuxtConfig({
       },
     },
   },
+  imports: {
+    autoImport: false,
+  },
   unocss: {
     presets: [
       PresetAttributify(),

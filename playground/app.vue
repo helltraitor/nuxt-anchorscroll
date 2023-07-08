@@ -2,6 +2,8 @@
 import '@/assets/css/preferred.sass'
 import '@/assets/css/standard.sass'
 
+import { onMounted, toValue, useNuxtApp, useSeoMeta } from '#imports'
+
 const nuxtApp = useNuxtApp()
 
 // Set custom anchor with Y axis scrolling to dynamic offset

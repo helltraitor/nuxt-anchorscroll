@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { useAnchorScroll } from '#imports'
+
 interface ProseH1Properties {
   id: string
 }

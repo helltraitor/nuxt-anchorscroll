@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import '@/assets/css/linked.sass'
 
+import { onMounted, queryContent } from '#imports'
+
 const common_card = await queryContent('/card').findOne()
 const preferred_card = await queryContent('/preferred/card').findOne()
 const standard_card = await queryContent('/standard/card').findOne()

@@ -1,7 +1,10 @@
-import type { AnchorScrollAction } from './anchorscroll'
-import type { RouteLocationNormalizedLoaded } from '.nuxt/vue-router'
+import { toValue } from 'vue'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
-import { type RuntimeNuxtHooks, defineNuxtPlugin, useNuxtApp, useRuntimeConfig } from '#app'
+import type { RuntimeNuxtHooks } from 'nuxt/app'
+import { defineNuxtPlugin, useNuxtApp, useRuntimeConfig } from 'nuxt/app'
+
+import type { AnchorScrollAction } from './anchorscroll'
 
 const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScrollAction => {
   if (route.hash !== '') {
@@ -32,7 +35,7 @@ const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScroll
 const anchorScrollExecutor = (hook: keyof RuntimeNuxtHooks) => {
   const nuxtApp = useNuxtApp()
 
-  const { currentRoute } = useRouter()
+  const currentRoute = nuxtApp.$router.currentRoute
   const disableAnchorScroll = currentRoute.value.meta.disableAnchorScroll ?? {}
 
   const {
