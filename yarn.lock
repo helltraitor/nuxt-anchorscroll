@@ -903,7 +903,26 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@iconify/types@npm:^2.0.0":
+"@iconify-json/carbon@npm:^1.1.18":
+  version: 1.1.18
+  resolution: "@iconify-json/carbon@npm:1.1.18"
+  dependencies:
+    "@iconify/types": "*"
+  checksum: 10faef73d354015c01cb25c0af783170914b7f88180db88cb87b5dba471c676b1536ab116981850b8bcbed9e4d4d60afaa23978d48db4fb2dcfca8e392c8b412
+  languageName: node
+  linkType: hard
+
+"@iconify/json@npm:^2.2.88":
+  version: 2.2.88
+  resolution: "@iconify/json@npm:2.2.88"
+  dependencies:
+    "@iconify/types": "*"
+    pathe: ^1.1.0
+  checksum: b7340f1ceb805f218420001892687a6b1f68ea12f8dee766c8d52a1f71b5aa03ecb3eed957609c7ab916d5e89de15422a9fc53f424b285dea1e7153039a6d023
+  languageName: node
+  linkType: hard
+
+"@iconify/types@npm:*, @iconify/types@npm:^2.0.0":
   version: 2.0.0
   resolution: "@iconify/types@npm:2.0.0"
   checksum: 029f58542c160e9d4a746869cf2e475b603424d3adf3994c5cc8d0406c47e6e04a3b898b2707840c1c5b9bd5563a1660a34b110d89fce43923baca5222f4e597
@@ -8675,6 +8694,8 @@ __metadata:
   resolution: "nuxt-anchorscroll@workspace:."
   dependencies:
     "@antfu/eslint-config": ^0.39.7
+    "@iconify-json/carbon": ^1.1.18
+    "@iconify/json": ^2.2.88
     "@nuxt/content": ^2.7.0
     "@nuxt/devtools": latest
     "@nuxt/eslint-config": ^0.1.1

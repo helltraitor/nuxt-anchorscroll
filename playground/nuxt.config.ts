@@ -1,5 +1,6 @@
 import {
   presetAttributify as PresetAttributify,
+  presetIcons as PresetIcons,
   presetUno as PresetUno,
 } from 'unocss'
 
@@ -29,6 +30,11 @@ export default defineNuxtConfig({
   unocss: {
     presets: [
       PresetAttributify(),
+      PresetIcons({
+        prefix: 'i-',
+        scale: 1.2,
+        warn: true,
+      }),
       PresetUno(),
     ],
   },
