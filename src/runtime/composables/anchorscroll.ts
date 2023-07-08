@@ -1,17 +1,16 @@
 import { type MaybeRefOrGetter, type Ref, computed, toValue } from "vue"
-import type { ScrollOptions } from "../anchorscroll"
 import { useNuxtApp } from "nuxt/app"
 
+import type { AnchorScrollAction, AnchorScrollOptions } from "../anchorscroll"
+
+type AnchorScrollActionNoTarget = Omit<AnchorScrollAction, 'target'>
+
 interface AnchorScrollDeterminedOptions {
-  toAnchor?: MaybeRefOrGetter<ScrollOptions>
-  toTop?: MaybeRefOrGetter<ScrollOptions>
+  toAnchor?: AnchorScrollActionNoTarget
+  toTop?: AnchorScrollActionNoTarget
 }
 
-interface AnchorScrollComposableOptions extends AnchorScrollDeterminedOptions {
-  common?: MaybeRefOrGetter<ScrollOptions>
-}
-
-type AnchorScrollComposableValue = AnchorScrollComposableOptions | ScrollOptions | undefined
+type AnchorScrollComposableOptions = AnchorScrollDeterminedOptions | AnchorScrollActionNoTarget | undefined
 
 interface ScrollToAnchorOptions {
   /**
@@ -46,47 +45,46 @@ interface AnchorScrollComposables {
 }
 
 /**
- * Repack any composable value as pair of determined ones
- */
-const selectScrollOptions = (options: MaybeRefOrGetter<AnchorScrollComposableValue> = undefined): AnchorScrollDeterminedOptions => {
-  return {
-    toAnchor: computed(() => {
-      const optionsValue = toValue(options)
-      if (typeof optionsValue === 'undefined') {
-        return useNuxtApp().$anchorScroll?.toAnchor?.scroll
-      }
-
-      const maybeScrollOptions = optionsValue as ScrollOptions
-      if (maybeScrollOptions.behavior || maybeScrollOptions.offsetLeft || maybeScrollOptions.offsetTop) {
-        return maybeScrollOptions
-      }
-
-      const composablesOptions = optionsValue as AnchorScrollComposableOptions
-      return composablesOptions.toAnchor ?? composablesOptions.common ?? useNuxtApp().$anchorScroll?.toAnchor?.scroll
-    }) as Ref<ScrollOptions>,
-
-    toTop: computed(() => {
-      const optionsValue = toValue(options)
-      if (typeof optionsValue === 'undefined') {
-        return useNuxtApp().$anchorScroll?.toTop?.scroll
-      }
-
-      const maybeScrollOptions = optionsValue as ScrollOptions
-      if (maybeScrollOptions.behavior || maybeScrollOptions.offsetLeft || maybeScrollOptions.offsetTop) {
-        return maybeScrollOptions
-      }
-
-      const composablesOptions = optionsValue as AnchorScrollComposableOptions
-      return composablesOptions.toTop ?? composablesOptions.common ?? useNuxtApp().$anchorScroll?.toTop?.scroll
-    }) as Ref<ScrollOptions>
-  }
-}
-
-/**
  * Produce composables with provided settings (can be reactive).
  */
-export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposableValue>): AnchorScrollComposables => {
-  const { toAnchor, toTop } = selectScrollOptions(options)
+export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposableOptions> = {}): AnchorScrollComposables => {
+  const toAnchorSurfaces = computed(() => {
+    const unwrappedOptions = toValue(options)
+    return (
+      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.surfaces
+      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toAnchor?.surfaces
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults.surfaces)
+      ?? []
+    )
+  })
+
+  const toAnchorScrollOptions = computed(() => {
+    const unwrappedOptions = toValue(options)
+    return (
+      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.scrollOptions
+      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toAnchor?.scrollOptions
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) as AnchorScrollOptions | undefined
+    )
+  })
+
+  const toTopSurfaces = computed(() => {
+    const unwrappedOptions = toValue(options)
+    return (
+      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.surfaces
+      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toTop?.surfaces
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults.surfaces)
+      ?? []
+    )
+  })
+
+  const toTopScrollOptions = computed(() => {
+    const unwrappedOptions = toValue(options)
+    return (
+      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.scrollOptions
+      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toTop?.scrollOptions
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toTop) as AnchorScrollOptions | undefined
+    )
+  })
 
   return {
     scrollToAnchor(target) {
@@ -127,39 +125,40 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
       if (!anchorElement)
         return false
 
-      const { top: elementTop, left: elementLeft } = anchorElement.getBoundingClientRect()
+      const { top, left } = anchorElement.getBoundingClientRect()
 
-      const { behavior, offsetLeft, offsetTop } = toValue(toAnchor) ?? {}
+      const { behavior, offsetLeft, offsetTop } = toValue(toAnchorScrollOptions) ?? {}
 
-      const offsetLeftUnwrapped = toValue(offsetLeft)
-      const offsetTopUnwrapped = toValue(offsetTop)
-
-      const scrollByAnchor = {
-        behavior: toValue(behavior),
-        ...(offsetLeftUnwrapped === undefined ? {} : {left: elementLeft + offsetLeftUnwrapped}),
-        ...(offsetTopUnwrapped === undefined ? {} : {top: elementTop + offsetTopUnwrapped}),
+      const scrollToAnchorOptions = {
+        behavior: behavior,
+        ...(offsetLeft !== undefined && { left: left + offsetLeft }),
+        ...(offsetTop !== undefined && { top: top + offsetTop })
       }
 
-      document.scrollingElement?.scrollBy(scrollByAnchor)
-      document.body.scrollBy(scrollByAnchor)
+      const maybeSurfaces = toValue(toAnchorSurfaces)
+      const surfaces = Array.isArray(maybeSurfaces) ? maybeSurfaces : (maybeSurfaces ? [maybeSurfaces] : [])
+
+      for (const surface of surfaces) {
+        surface.scrollBy(scrollToAnchorOptions)
+      }
 
       return true
     },
 
     scrollToTop() {
-      const { behavior, offsetLeft, offsetTop } = toValue(toTop) ?? {}
+      const { behavior, offsetLeft, offsetTop } = toValue(toTopScrollOptions) ?? {}
 
-      const offsetLeftUnwrapped = toValue(offsetLeft)
-      const offsetTopUnwrapped = toValue(offsetTop)
-
-      const scrollToTop = {
-        behavior: toValue(behavior),
-        ...(offsetLeftUnwrapped === undefined ? {} : { left: offsetLeftUnwrapped }),
-        ...(offsetTopUnwrapped === undefined ? {} : { top: offsetTopUnwrapped }),
+      const scrollToTopOptions = {
+        behavior: behavior,
+        left: offsetLeft,
+        top: offsetTop,
       }
 
-      document.scrollingElement?.scrollTo(scrollToTop)
-      document.body.scrollTo(scrollToTop)
+      const maybeSurfaces = toValue(toTopSurfaces)
+      const surfaces = Array.isArray(maybeSurfaces) ? maybeSurfaces : (maybeSurfaces ? [maybeSurfaces] : [])
+
+      for (const surface of surfaces)
+        surface.scrollTo(scrollToTopOptions)
     },
   }
 }
