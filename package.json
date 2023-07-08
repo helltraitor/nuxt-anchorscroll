@@ -31,6 +31,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.39.7",
+    "@iconify-json/carbon": "^1.1.18",
+    "@iconify/json": "^2.2.88",
     "@nuxt/content": "^2.7.0",
     "@nuxt/devtools": "latest",
     "@nuxt/eslint-config": "^0.1.1",
