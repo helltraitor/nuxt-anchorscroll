@@ -49,19 +49,21 @@ runtime configuration (default configuration setups before `script setup`)
 ```ts
 nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
   // Exit when route is not represent fixed example
-  if (!hash || !path.startsWith('/standard/fixed'))
+  if (!path.startsWith('/standard/fixed'))
     return undefined
 
-  // All anchor element on this route is mangled
-  const targetSelector = `#fixed-${hash.slice(1)}`
-  const targetElement = document.querySelector(targetSelector)
-
-  if (!targetElement)
-    return undefined
-
-  return {
-    target: targetElement as HTMLElement,
-    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {}
+  if (hash) {
+    // All anchor element on this route is mangled
+    const targetSelector = `#fixed-${hash.slice(1)}`
+    const targetElement = document.querySelector(targetSelector)
+    if (targetElement) {
+      return {
+        toAnchor: {
+          target: targetElement as HTMLElement,
+          scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {},
+        },
+      }
+    }
   }
 })
 ```
@@ -74,11 +76,21 @@ nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
   if (!path.startsWith('/scrollable'))
     return undefined
 
+  const surfaces = [...document.querySelectorAll('#exited-scrollable-surface')]
+
   return {
-    surfaces: [...document.querySelectorAll('#exited-scrollable-surface')],
-    scrollOptions: {
-      /* ... */
+    toAnchor: {
+      surfaces,
+      scrollOptions: {
+        /* ... */
+      },
     },
+    toTop: {
+      surfaces,
+      scrollOptions: {
+        /* ... */
+      },
+    }
   }
 })
 ```
