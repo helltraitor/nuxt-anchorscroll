@@ -4,32 +4,36 @@ import type { RouteLocationNormalizedLoaded } from 'vue-router'
 import type { RuntimeNuxtHooks } from 'nuxt/app'
 import { defineNuxtPlugin, useNuxtApp, useRuntimeConfig } from 'nuxt/app'
 
-import type { AnchorScrollAction } from './anchorscroll'
+import type { AnchorScrollVariants } from './anchorscroll'
 
-const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScrollAction => {
-  if (route.hash !== '') {
+const generalAnchorScroll = ({ hash }: RouteLocationNormalizedLoaded): AnchorScrollVariants => {
+  const scrollVariants: AnchorScrollVariants = {
+    toTop: {
+      scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toTop) || {},
+    },
+  }
+
+  if (hash !== '') {
     try {
-      const target = document.querySelector(route.hash) as HTMLElement | null
-      if (target) {
-        return {
-          target,
-          scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toAnchor) ?? {},
-        }
+      const target = document.querySelector(hash) as HTMLElement | null
+
+      if (!target) {
+        console.error(`[AnchorScroll]: unable to find element with selector '${hash}'`)
+        return scrollVariants
       }
 
-      // In case of null, exit anchor branch
-      console.error(`[AnchorScroll]: unable to find element with selector '${route.hash}'`)
+      scrollVariants.toAnchor = {
+        target,
+        scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toAnchor) ?? {},
+      }
     }
     catch (error) {
       // In case of error, exit anchor branch
-      console.error(`[AnchorScroll]: unable to get element for selector '${route.hash}':`, error)
+      console.error(`[AnchorScroll]: unable to get element for selector '${hash}':`, error)
     }
   }
 
-  // No hash or anchor is not found
-  return {
-    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toTop) || {},
-  }
+  return scrollVariants
 }
 
 const anchorScrollExecutor = (hook: keyof RuntimeNuxtHooks) => {
@@ -46,64 +50,52 @@ const anchorScrollExecutor = (hook: keyof RuntimeNuxtHooks) => {
   if (disableToAnchor && disableToTop)
     return
 
-  let maybeAnchorScrollAction: AnchorScrollAction | false | undefined
-  nuxtApp.$anchorScroll?.matched?.find((matched) => {
-    maybeAnchorScrollAction = matched(currentRoute.value, hook)
-    return maybeAnchorScrollAction !== undefined
-  })
+  const allMatched = [...nuxtApp?.$anchorScroll?.matched ?? [], generalAnchorScroll]
 
-  if (maybeAnchorScrollAction === undefined)
-    maybeAnchorScrollAction = nuxtApp.$anchorScroll?.general(currentRoute.value, hook)
-
-  if (maybeAnchorScrollAction === undefined) {
-    console.warn(`[AnchorScroll]: unable to get scroll action for hook '${hook}' and next route`, currentRoute.value)
-    return
-  }
-
-  // Match, no action needed
-  if (maybeAnchorScrollAction === false)
-    return
-
-  const {
-    target,
-    scrollOptions,
-    surfaces = toValue(nuxtApp.$anchorScroll?.defaults?.surfaces),
-  } = maybeAnchorScrollAction
-
-  // Action is anchor
-  if (target !== undefined) {
-    // But scroll is disabled
-    if (disableToAnchor)
+  for (const matched of allMatched) {
+    const maybeAnchorScrollAlternatives = matched(currentRoute.value, hook)
+    if (maybeAnchorScrollAlternatives === false)
       return
 
-    const { top, left } = target.getBoundingClientRect()
+    const { toAnchor, toTop } = maybeAnchorScrollAlternatives ?? {}
 
-    const scrollToAnchorOptions = {
-      behavior: scrollOptions.behavior,
-      ...(scrollOptions.offsetLeft !== undefined && { left: left + scrollOptions.offsetLeft }),
-      ...(scrollOptions.offsetTop !== undefined && { top: top + scrollOptions.offsetTop }),
+    if (!disableToAnchor && toAnchor) {
+      const {
+        target,
+        scrollOptions: { behavior, offsetLeft, offsetTop },
+        surfaces = toValue(nuxtApp.$anchorScroll?.defaults.surfaces) ?? [],
+      } = toAnchor
+
+      const { top, left } = target.getBoundingClientRect()
+
+      const scrollToAnchorOptions = {
+        behavior,
+        ...(offsetLeft !== undefined && { left: left + offsetLeft }),
+        ...(offsetTop !== undefined && { top: top + offsetTop }),
+      }
+
+      for (const surface of surfaces)
+        surface.scrollBy(scrollToAnchorOptions)
+
+      return
     }
 
-    for (const surface of surfaces ?? [])
-      surface.scrollBy(scrollToAnchorOptions)
+    if (!disableToTop && toTop) {
+      const {
+        scrollOptions: { behavior, offsetLeft, offsetTop },
+        surfaces = toValue(nuxtApp.$anchorScroll?.defaults.surfaces) ?? [],
+      } = toTop
 
-    // At this moment
-    return
+      const scrollToTopOptions = {
+        behavior,
+        left: offsetLeft,
+        top: offsetTop,
+      }
+
+      for (const surface of surfaces)
+        surface.scrollTo(scrollToTopOptions)
+    }
   }
-
-  // Action is top
-  // But scroll is disabled
-  if (disableToTop)
-    return
-
-  const scrollToTopOptions = {
-    behavior: scrollOptions.behavior,
-    left: scrollOptions.offsetLeft,
-    top: scrollOptions.offsetTop,
-  }
-
-  for (const surface of surfaces ?? [])
-    surface.scrollTo(scrollToTopOptions)
 }
 
 export default defineNuxtPlugin((nuxtApp) => {

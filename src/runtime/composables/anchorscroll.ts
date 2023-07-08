@@ -1,16 +1,9 @@
 import { type MaybeRefOrGetter, computed, toValue } from 'vue'
 import { useNuxtApp } from 'nuxt/app'
 
-import type { AnchorScrollAction, AnchorScrollOptions } from '../anchorscroll'
+import type { AnchorScrollCommonOptions, AnchorScrollVariants } from '../anchorscroll'
 
-type AnchorScrollActionNoTarget = Omit<AnchorScrollAction, 'target'>
-
-interface AnchorScrollDeterminedOptions {
-  toAnchor?: AnchorScrollActionNoTarget
-  toTop?: AnchorScrollActionNoTarget
-}
-
-type AnchorScrollComposableOptions = AnchorScrollDeterminedOptions | AnchorScrollActionNoTarget | undefined
+type AnchorScrollComposableOptions = AnchorScrollVariants | AnchorScrollCommonOptions | undefined
 
 interface ScrollToAnchorOptions {
   /**
@@ -51,8 +44,8 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
   const toAnchorSurfaces = computed(() => {
     const unwrappedOptions = toValue(options)
     return (
-      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.surfaces
-      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toAnchor?.surfaces
+      (unwrappedOptions as AnchorScrollCommonOptions | undefined)?.surfaces
+      ?? (unwrappedOptions as AnchorScrollVariants | undefined)?.toAnchor?.surfaces
       ?? toValue(useNuxtApp().$anchorScroll?.defaults.surfaces)
       ?? []
     )
@@ -61,17 +54,17 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
   const toAnchorScrollOptions = computed(() => {
     const unwrappedOptions = toValue(options)
     return (
-      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.scrollOptions
-      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toAnchor?.scrollOptions
-      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) as AnchorScrollOptions | undefined
+      (unwrappedOptions as AnchorScrollCommonOptions | undefined)?.scrollOptions
+      ?? (unwrappedOptions as AnchorScrollVariants | undefined)?.toAnchor?.scrollOptions
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor)
     )
   })
 
   const toTopSurfaces = computed(() => {
     const unwrappedOptions = toValue(options)
     return (
-      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.surfaces
-      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toTop?.surfaces
+      (unwrappedOptions as AnchorScrollCommonOptions | undefined)?.surfaces
+      ?? (unwrappedOptions as AnchorScrollVariants | undefined)?.toTop?.surfaces
       ?? toValue(useNuxtApp().$anchorScroll?.defaults.surfaces)
       ?? []
     )
@@ -80,9 +73,9 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
   const toTopScrollOptions = computed(() => {
     const unwrappedOptions = toValue(options)
     return (
-      (unwrappedOptions as Partial<AnchorScrollActionNoTarget> | undefined)?.scrollOptions
-      ?? (unwrappedOptions as AnchorScrollDeterminedOptions | undefined)?.toTop?.scrollOptions
-      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toTop) as AnchorScrollOptions | undefined
+      (unwrappedOptions as AnchorScrollCommonOptions | undefined)?.scrollOptions
+      ?? (unwrappedOptions as AnchorScrollVariants | undefined)?.toTop?.scrollOptions
+      ?? toValue(useNuxtApp().$anchorScroll?.defaults?.toTop)
     )
   })
 
@@ -135,10 +128,7 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
         ...(offsetTop !== undefined && { top: top + offsetTop }),
       }
 
-      const maybeSurfaces = toValue(toAnchorSurfaces)
-      const surfaces = Array.isArray(maybeSurfaces) ? maybeSurfaces : (maybeSurfaces ? [maybeSurfaces] : [])
-
-      for (const surface of surfaces)
+      for (const surface of toValue(toAnchorSurfaces))
         surface.scrollBy(scrollToAnchorOptions)
 
       return true
@@ -153,10 +143,7 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
         top: offsetTop,
       }
 
-      const maybeSurfaces = toValue(toTopSurfaces)
-      const surfaces = Array.isArray(maybeSurfaces) ? maybeSurfaces : (maybeSurfaces ? [maybeSurfaces] : [])
-
-      for (const surface of surfaces)
+      for (const surface of toValue(toTopSurfaces))
         surface.scrollTo(scrollToTopOptions)
     },
   }

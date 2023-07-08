@@ -136,25 +136,10 @@ export interface AnchorScrollOptions {
   offsetLeft?: number
 }
 
-/**
- * This object will be provided to anchorscroll mechanism.
- *
- * Provide target or its selector in case if you want to anchor,
- * or left it empty to have scroll to top.
- *
- * Note: you can set desired location by omitted target
- * (0 + offset* = offset*) `:D`
- */
-export interface AnchorScrollAction {
-  /**
-   * `undefined`: scroll to top
-   *
-   * `HTMLElement`: scroll to anchor (by element)
-   */
-  target?: HTMLElement
+export interface AnchorScrollCommonOptions {
 
   /**
-   * `undefined`: use default surface(s)
+   * `undefined`: use default surfaces
    *
    * `HTMLElement[]`: scroll over all provided surfaces
    */
@@ -168,7 +153,32 @@ export interface AnchorScrollAction {
   scrollOptions: AnchorScrollOptions
 }
 
-type AnchorScrollCommonFunction<T> = (route: RouteLocationNormalizedLoaded, hook: keyof RuntimeNuxtHooks) => T
+export interface AnchorScrollToTopOptions extends AnchorScrollCommonOptions {}
+
+export interface AnchorScrollToAnchorOptions extends AnchorScrollToTopOptions {
+  /**
+   * `HTMLElement`: scroll to anchor (by element)
+   */
+  target: HTMLElement
+}
+
+/**
+ * This object will be provided to `nuxt-anchorscroll` mechanism.
+ *
+ * Values will be chosen accordingly `PageMeta.disableAnchorScroll`
+ *
+ * In case when one of needed values is `undefined`, next matched function
+ * will be called and so until general.
+ *
+ * Note: you can use `PageMeta.disableAnchorScroll` in case
+ * when evaluations may be expensive
+ */
+export interface AnchorScrollVariants {
+  toAnchor?: AnchorScrollToAnchorOptions
+  toTop?: AnchorScrollToTopOptions
+}
+
+type AnchorScrollMatchedFunction = (route: RouteLocationNormalizedLoaded, hook: keyof RuntimeNuxtHooks) => AnchorScrollVariants | false | undefined
 
 interface AnchorScrollPluginRuntimeOptions {
   $anchorScroll?: {
@@ -181,7 +191,7 @@ interface AnchorScrollPluginRuntimeOptions {
      *
      * Note: Set target in returned options for scroll to anchor
      */
-    matched: AnchorScrollCommonFunction<AnchorScrollAction | false | undefined>[]
+    matched: AnchorScrollMatchedFunction[]
 
     /**
      * Called as the last function when no suitable value provided
@@ -190,7 +200,7 @@ interface AnchorScrollPluginRuntimeOptions {
      * Plugin provides default implementation. Can be overridden
      * or decorated if needed.
      */
-    general: AnchorScrollCommonFunction<AnchorScrollAction | undefined>
+    general: AnchorScrollMatchedFunction
 
     /**
      * Any useful stuff can be bind here.
