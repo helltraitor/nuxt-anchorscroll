@@ -15,7 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
     compatibility: {
       nuxt: '^3.0.0',
     },
-    version: '1.0.1-alpha',
+    version: '1.0.1',
   },
   defaults: {
     hooks: ['page:finish'],
