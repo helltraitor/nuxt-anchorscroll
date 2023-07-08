@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { definePageMeta, onMounted, queryContent, useAsyncData, useRouter } from '#imports'
+
 const { currentRoute } = useRouter()
 const { data } = await useAsyncData(currentRoute.value.path, () => queryContent(currentRoute.value.path).findOne())
 

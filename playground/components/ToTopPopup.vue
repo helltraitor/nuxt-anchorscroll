@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import '@/assets/css/linked.sass'
 
+import { useAnchorScroll } from '#imports'
+
 const { scrollToTop } = useAnchorScroll({
   scrollOptions: {
     behavior: 'smooth',
