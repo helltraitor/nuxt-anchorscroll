@@ -18,12 +18,12 @@ onMounted(() => {
     <div flex flex-col>
       <div flex flex-row gap-4>
         <NuxtLink to="/preferred/explanation">
-          <div class="linked" border="~ solid rounded" p-4 w-40vw max-w-60ch>
+          <div class="linked" border="~ solid rounded" p-4 max-w-60ch>
             <ContentRendererMarkdown :value="preferred_card" tag="div" />
           </div>
         </NuxtLink>
         <NuxtLink to="/standard/explanation">
-          <div class="linked" border="~ solid rounded" p-4 w-40vw max-w-60ch>
+          <div class="linked" border="~ solid rounded" p-4 max-w-60ch>
             <ContentRendererMarkdown :value="standard_card" tag="div" />
           </div>
         </NuxtLink>
