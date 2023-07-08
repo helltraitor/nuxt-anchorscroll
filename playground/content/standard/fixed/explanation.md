@@ -161,7 +161,7 @@ Matched function can return the following values:
 The `scrollTo*` must specify `scrollOptions` and can specify `target` and `surfaces`. In case when target specified, `scrollToTop` becomes `scrollToAnchor`:
 
 ```ts
-{
+return {
   target: realHtmlElement,
   scrollOptions: {
     // Any what you like

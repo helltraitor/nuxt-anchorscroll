@@ -1,15 +1,16 @@
 {
   "name": "nuxt-anchorscroll",
-  "version": "1.0.0",
-  "description": "Scroll with anchor support for Nuxt",
-  "repository": "helltraitor/nuxt-anchorscroll",
-  "license": "MIT",
   "type": "module",
+  "version": "1.0.0",
+  "packageManager": "yarn@3.6.1",
+  "description": "Scroll with anchor support for Nuxt",
+  "license": "MIT",
+  "repository": "helltraitor/nuxt-anchorscroll",
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
-      "import": "./dist/module.mjs",
-      "require": "./dist/module.cjs"
+      "require": "./dist/module.cjs",
+      "import": "./dist/module.mjs"
     }
   },
   "main": "./dist/module.cjs",
@@ -43,6 +44,5 @@
     "nuxt": "^3.5.1",
     "sass": "^1.63.6",
     "vitest": "^0.31.4"
-  },
-  "packageManager": "yarn@3.6.1"
+  }
 }
