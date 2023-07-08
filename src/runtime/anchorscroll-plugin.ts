@@ -1,7 +1,7 @@
+import type { AnchorScrollAction } from './anchorscroll'
 import type { RouteLocationNormalizedLoaded } from '.nuxt/vue-router'
 
 import { type RuntimeNuxtHooks, defineNuxtPlugin, useNuxtApp, useRuntimeConfig } from '#app'
-import { AnchorScrollAction } from './anchorscroll'
 
 const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScrollAction => {
   if (route.hash !== '') {
@@ -10,7 +10,7 @@ const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScroll
       if (target) {
         return {
           target,
-          scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toAnchor) ?? {}
+          scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toAnchor) ?? {},
         }
       }
 
@@ -25,7 +25,7 @@ const generalAnchorScroll = (route: RouteLocationNormalizedLoaded): AnchorScroll
 
   // No hash or anchor is not found
   return {
-    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toTop) || {}
+    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults.toTop) || {},
   }
 }
 
@@ -37,7 +37,7 @@ const anchorScrollExecutor = (hook: keyof RuntimeNuxtHooks) => {
 
   const {
     toAnchor: disableToAnchor = false,
-    toTop: disableToTop = false
+    toTop: disableToTop = false,
   } = disableAnchorScroll === true ? { toAnchor: true, toTop: true } : disableAnchorScroll
 
   if (disableToAnchor && disableToTop)
@@ -78,12 +78,11 @@ const anchorScrollExecutor = (hook: keyof RuntimeNuxtHooks) => {
     const scrollToAnchorOptions = {
       behavior: scrollOptions.behavior,
       ...(scrollOptions.offsetLeft !== undefined && { left: left + scrollOptions.offsetLeft }),
-      ...(scrollOptions.offsetTop !== undefined && { top: top + scrollOptions.offsetTop })
+      ...(scrollOptions.offsetTop !== undefined && { top: top + scrollOptions.offsetTop }),
     }
 
-    for (const surface of surfaces ?? []) {
+    for (const surface of surfaces ?? [])
       surface.scrollBy(scrollToAnchorOptions)
-    }
 
     // At this moment
     return
@@ -124,7 +123,7 @@ export default defineNuxtPlugin((nuxtApp) => {
         offsetTop: 0,
       },
       surfaces: () => [document.documentElement, document.body],
-    }
+    },
   }
 
   for (const hook of hooks)

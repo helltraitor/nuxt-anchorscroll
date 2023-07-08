@@ -1,4 +1,4 @@
-import { defineNuxtModule, addPlugin, createResolver, addImportsDir } from '@nuxt/kit'
+import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nuxt/kit'
 
 import type { RuntimeNuxtHooks } from 'nuxt/app'
 
@@ -20,12 +20,12 @@ export default defineNuxtModule<ModuleOptions>({
   defaults: {
     hooks: ['page:finish'],
   },
-  setup (options, nuxt) {
+  setup(options, nuxt) {
     const resolver = createResolver(import.meta.url)
 
     nuxt.options.runtimeConfig.public.anchorScroll = { ...options }
 
     addPlugin(resolver.resolve('./runtime/anchorscroll-plugin'))
     addImportsDir(resolver.resolve('./runtime/composables'))
-  }
+  },
 })

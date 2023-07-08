@@ -1,7 +1,7 @@
-import { type MaybeRefOrGetter, type Ref, computed, toValue } from "vue"
-import { useNuxtApp } from "nuxt/app"
+import { type MaybeRefOrGetter, computed, toValue } from 'vue'
+import { useNuxtApp } from 'nuxt/app'
 
-import type { AnchorScrollAction, AnchorScrollOptions } from "../anchorscroll"
+import type { AnchorScrollAction, AnchorScrollOptions } from '../anchorscroll'
 
 type AnchorScrollActionNoTarget = Omit<AnchorScrollAction, 'target'>
 
@@ -130,17 +130,16 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
       const { behavior, offsetLeft, offsetTop } = toValue(toAnchorScrollOptions) ?? {}
 
       const scrollToAnchorOptions = {
-        behavior: behavior,
+        behavior,
         ...(offsetLeft !== undefined && { left: left + offsetLeft }),
-        ...(offsetTop !== undefined && { top: top + offsetTop })
+        ...(offsetTop !== undefined && { top: top + offsetTop }),
       }
 
       const maybeSurfaces = toValue(toAnchorSurfaces)
       const surfaces = Array.isArray(maybeSurfaces) ? maybeSurfaces : (maybeSurfaces ? [maybeSurfaces] : [])
 
-      for (const surface of surfaces) {
+      for (const surface of surfaces)
         surface.scrollBy(scrollToAnchorOptions)
-      }
 
       return true
     },
@@ -149,7 +148,7 @@ export const useAnchorScroll = (options: MaybeRefOrGetter<AnchorScrollComposable
       const { behavior, offsetLeft, offsetTop } = toValue(toTopScrollOptions) ?? {}
 
       const scrollToTopOptions = {
-        behavior: behavior,
+        behavior,
         left: offsetLeft,
         top: offsetTop,
       }
