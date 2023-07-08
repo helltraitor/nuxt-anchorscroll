@@ -25,15 +25,12 @@ nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
     const targetElement = document.querySelector(targetSelector)
     if (targetElement) {
       return {
-        target: targetElement as HTMLElement,
-        scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {},
+        toAnchor: {
+          target: targetElement as HTMLElement,
+          scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {},
+        },
       }
     }
-    // In case when no target found, fallback to top
-  }
-
-  return {
-    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toTop) ?? {},
   }
 })
 
