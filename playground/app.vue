@@ -24,14 +24,14 @@ nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
     if (targetElement) {
       return {
         target: targetElement as HTMLElement,
-        scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {}
+        scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toAnchor) ?? {},
       }
     }
     // In case when no target found, fallback to top
   }
 
   return {
-    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toTop) ?? {}
+    scrollOptions: toValue(useNuxtApp().$anchorScroll?.defaults?.toTop) ?? {},
   }
 })
 
@@ -41,7 +41,7 @@ onMounted(() => {
 })
 
 useSeoMeta({
-  title: 'nuxt-anchorscroll'
+  title: 'nuxt-anchorscroll',
 })
 </script>
 
