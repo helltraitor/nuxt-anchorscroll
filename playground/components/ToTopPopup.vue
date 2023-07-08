@@ -5,7 +5,7 @@ const { scrollToTop } = useAnchorScroll({
   scrollOptions: {
     behavior: 'smooth',
     offsetTop: 0,
-  }
+  },
 })
 </script>
 

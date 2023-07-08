@@ -6,7 +6,8 @@ onMounted(() => {
   if (currentRoute.value.path.startsWith('/preferred/')) {
     document.documentElement.classList.add('preferred')
     document.documentElement.classList.remove('standard')
-  } else {
+  }
+  else {
     document.documentElement.classList.add('standard')
     document.documentElement.classList.remove('preferred')
   }
@@ -14,7 +15,7 @@ onMounted(() => {
 
 const MarkdownComponents = {
   // Use Fixed implementation when user reads explanation for standard and check out fix
-  h2: currentRoute.value.path.startsWith('/standard/fixed/') ? 'ProseH2Fixed' : 'ProseH2'
+  h2: currentRoute.value.path.startsWith('/standard/fixed/') ? 'ProseH2Fixed' : 'ProseH2',
 }
 
 definePageMeta({
