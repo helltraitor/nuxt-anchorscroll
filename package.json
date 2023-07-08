@@ -1,7 +1,7 @@
 {
   "name": "nuxt-anchorscroll",
   "type": "module",
-  "version": "1.0.0",
+  "version": "1.0.1-alpha",
   "packageManager": "yarn@3.6.1",
   "description": "Scroll with anchor support for Nuxt",
   "license": "MIT",
