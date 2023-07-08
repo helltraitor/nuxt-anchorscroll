@@ -1,6 +1,6 @@
 import { defineNuxtModule, addPlugin, createResolver, addImportsDir } from '@nuxt/kit'
 
-import type { RuntimeNuxtHooks } from '#app'
+import type { RuntimeNuxtHooks } from 'nuxt/app'
 
 type HookKeys<T> = keyof T
 
