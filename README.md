@@ -38,7 +38,7 @@ Originally it was intended for anchor scrolling that's why it's called `nuxt-anc
 In common case, you use cropped html or full html. In first case (you can check this now)
 scroll to anchor will not work. If it so, you can have a minimal setup.
 
-But in case if you anchor scroll is handled (by browser), you need additional setup -
+But in case if anchor scroll is handled (by browser), you need additional setup -
 full explanation in module playground.
 
 ### Extendable
