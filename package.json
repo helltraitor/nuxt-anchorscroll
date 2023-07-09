@@ -6,6 +6,13 @@
   "description": "Scroll with anchor support for Nuxt",
   "license": "MIT",
   "repository": "helltraitor/nuxt-anchorscroll",
+  "keywords": [
+    "anchor",
+    "nuxt",
+    "nuxt-module",
+    "scroll",
+    "vue"
+  ],
   "exports": {
     ".": {
       "types": "./dist/types.d.ts",
