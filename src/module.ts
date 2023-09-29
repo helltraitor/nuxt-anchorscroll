@@ -2,6 +2,8 @@ import { addImportsDir, addPlugin, createResolver, defineNuxtModule } from '@nux
 
 import type { RuntimeNuxtHooks } from 'nuxt/app'
 
+import pkg from '../package.json'
+
 type HookKeys<T> = keyof T
 
 export interface ModuleOptions {
@@ -15,7 +17,7 @@ export default defineNuxtModule<ModuleOptions>({
     compatibility: {
       nuxt: '^3.0.0',
     },
-    version: '1.0.2',
+    version: pkg.version,
   },
   defaults: {
     hooks: ['page:finish'],
