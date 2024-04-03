@@ -93,11 +93,7 @@ nuxtApp.$anchorScroll!.matched.push(({ path, hash }) => {
 Use your favorite package manager (I prefer yarn)
 
 ```bash
-yarn add -D nuxt-anchorscroll
-
-pnpm add -D nuxt-anchorscroll
-
-npm install --save-dev nuxt-anchorscroll
+npx nuxi@latest module add nuxt-anchorscroll
 ```
 
 2. Add `nuxt-anchorscroll` to the `modules` section of `nuxt.config.ts`
