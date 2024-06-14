@@ -15,7 +15,7 @@ export default defineNuxtModule<ModuleOptions>({
     name: 'nuxt-anchorscroll',
     configKey: 'anchorscroll',
     compatibility: {
-      nuxt: '^3.0.0',
+      nuxt: '>=3.0.0',
     },
     version: pkg.version,
   },
