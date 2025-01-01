@@ -1,5 +1,25 @@
 # Changelog
 
+## v1.0.5
+
+[compare changes](https://github.com/helltraitor/nuxt-anchorscroll/compare/v1.0.4...v1.0.5)
+
+### 🚀 Enhancements
+
+- Changelog ([e422538](https://github.com/helltraitor/nuxt-anchorscroll/commit/e422538))
+- Compat date ([e40ce11](https://github.com/helltraitor/nuxt-anchorscroll/commit/e40ce11))
+- Update module-builder ([83836ca](https://github.com/helltraitor/nuxt-anchorscroll/commit/83836ca))
+- Enable compatibility for nuxt 4 ([e761f2a](https://github.com/helltraitor/nuxt-anchorscroll/commit/e761f2a))
+- Bundler resolution ([33fc2ea](https://github.com/helltraitor/nuxt-anchorscroll/commit/33fc2ea))
+
+### 🏡 Chore
+
+- **docs:** Nuxi module add as way to install package ([87f70a0](https://github.com/helltraitor/nuxt-anchorscroll/commit/87f70a0))
+
+### ❤️ Contributors
+
+- Helltraitor ([@helltraitor](http://github.com/helltraitor))
+
 ## v1.0.4
 
 [compare changes](https://github.com/helltraitor/nuxt-anchorscroll/compare/v1.0.3...v1.0.4)
