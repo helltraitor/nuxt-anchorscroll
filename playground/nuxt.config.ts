@@ -10,7 +10,9 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '../src/module',
   ],
+
   devtools: { enabled: true },
+
   content: {
     highlight: {
       preload: [
@@ -24,9 +26,11 @@ export default defineNuxtConfig({
       },
     },
   },
+
   imports: {
     autoImport: false,
   },
+
   unocss: {
     presets: [
       PresetAttributify(),
@@ -38,4 +42,6 @@ export default defineNuxtConfig({
       PresetUno(),
     ],
   },
+
+  compatibilityDate: '2025-01-01',
 })
