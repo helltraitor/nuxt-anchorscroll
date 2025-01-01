@@ -100,6 +100,12 @@ pnpm add -D nuxt-anchorscroll
 npm install --save-dev nuxt-anchorscroll
 ```
 
+Or install it via `nuxi module`
+
+```bash
+npx nuxi@latest module add nuxt-anchorscroll
+```
+
 2. Add `nuxt-anchorscroll` to the `modules` section of `nuxt.config.ts`
 
 ```ts
