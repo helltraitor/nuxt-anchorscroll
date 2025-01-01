@@ -17,7 +17,8 @@ onMounted(() => {
 
 const MarkdownComponents = {
   // Use Fixed implementation when user reads explanation for standard and check out fix
-  h2: currentRoute.value.path.startsWith('/standard/fixed/') ? 'ProseH2Fixed' : 'ProseH2',
+  // UPD: Since latest updates, default anchors may not work
+  h2: currentRoute.value.path.startsWith('/standard/explanation') ? 'ProseH2' : 'ProseH2Fixed',
 }
 
 definePageMeta({

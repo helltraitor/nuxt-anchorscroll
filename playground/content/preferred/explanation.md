@@ -137,3 +137,6 @@ And then apply action on click for trigger element to target
 By default `scrollToAnchor` expects `id`, but supports a reactive value over `string` (id), element, or its options (string for selector `sr` and `id`)
 
 That all what you need for using `nuxt-anchorscroll` for preferred layout.
+
+## Update from 2025
+Since lastest changes, you may need to use fixed component (with shadow anchor): [`Read fix documentation (click on me)`](/standard/fixed/explanation)
