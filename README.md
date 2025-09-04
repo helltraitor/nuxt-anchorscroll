@@ -140,7 +140,7 @@ That's it! You can now use `nuxt-anchorscroll` in your Nuxt app ✨
 
 ## Composable
 
-Most probably that you want to scroll to anchor ro to top on click. That's possible via `useAnchorScroll` composable
+Most probably that you want to scroll to anchor or to top on click. That's possible via `useAnchorScroll` composable
 
 ```ts
 // Default to top is instant
